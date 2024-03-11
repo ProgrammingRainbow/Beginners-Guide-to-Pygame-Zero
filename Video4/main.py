@@ -28,7 +28,7 @@ class Game:
         self.font_color = (255, 255, 255)
         self.font_name = "freesansbold.ttf"
 
-        self.text = "SDL"
+        self.text = "Zero"
         self.text_vel = 2
         self.text_xvel = 2
         self.text_yvel = 2

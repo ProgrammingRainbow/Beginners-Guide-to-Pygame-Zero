@@ -31,12 +31,12 @@ class Game:
         self.font_color = (255, 255, 255)
         self.font_name = "freesansbold.ttf"
 
-        self.text = "SDL"
+        self.text = "Zero"
         self.text_vel = 2
         self.text_xvel = 2
         self.text_yvel = 2
         self.text_rect = Rect(
-            (0, 0), (self.font_size * len(self.text) / 1.5, self.font_size)
+            (0, 0), (self.font_size * len(self.text) / 1.8, self.font_size)
         )
 
         self.sprite = Actor("python-logo")
@@ -74,16 +74,16 @@ class Game:
         self.text_rect.y += self.text_yvel
         if self.text_rect.right > WIDTH:
             self.text_xvel = -self.text_vel
-            sounds.sdl.play()  # type: ignore
+            sounds.zero.play()  # type: ignore
         if self.text_rect.left < 0:
             self.text_xvel = self.text_vel
-            sounds.sdl.play()  # type: ignore
+            sounds.zero.play()  # type: ignore
         if self.text_rect.bottom > HEIGHT:
             self.text_yvel = -self.text_vel
-            sounds.sdl.play()  # type: ignore
+            sounds.zero.play()  # type: ignore
         if self.text_rect.top < 0:
             self.text_yvel = self.text_vel
-            sounds.sdl.play()  # type: ignore
+            sounds.zero.play()  # type: ignore
 
     def update_sprite(self):
         if keyboard.left:
