@@ -9,13 +9,16 @@ from pgzero.builtins import (  # type: ignore # pylint: disable=E0401
     Rect,
     Actor,
     keyboard,
+    sounds,
+    music,
 )
 
 # Game Constants.
 WIDTH = 800
 HEIGHT = 600
-TITLE = "Player Sprite"
+TITLE = "Sound and Music"
 ICON = "images/python-logo.png"
+MUSIC = "freesoftwaresong-8bit"
 
 
 class Game:
@@ -33,7 +36,7 @@ class Game:
         self.text_xvel = 2
         self.text_yvel = 2
         self.text_rect = Rect(
-            (0, 0), (self.font_size * len(self.text) / 1.5, self.font_size)
+            (0, 0), (self.font_size * len(self.text) / 1.8, self.font_size)
         )
 
         self.sprite = Actor("python-logo")
@@ -64,18 +67,23 @@ class Game:
         g = random.randint(0, 255)
         b = random.randint(0, 255)
         self.screen_color = (r, g, b)
+        sounds.python.play()  # type: ignore
 
     def update_text(self):
         self.text_rect.x += self.text_xvel
         self.text_rect.y += self.text_yvel
         if self.text_rect.right > WIDTH:
             self.text_xvel = -self.text_vel
+            sounds.zero.play()  # type: ignore
         if self.text_rect.left < 0:
             self.text_xvel = self.text_vel
+            sounds.zero.play()  # type: ignore
         if self.text_rect.bottom > HEIGHT:
             self.text_yvel = -self.text_vel
+            sounds.zero.play()  # type: ignore
         if self.text_rect.top < 0:
             self.text_yvel = self.text_vel
+            sounds.zero.play()  # type: ignore
 
     def update_sprite(self):
         if keyboard.left:
@@ -89,6 +97,7 @@ class Game:
 
 
 game = Game()
+music.play(MUSIC)
 
 
 def on_key_down(key):
@@ -96,6 +105,11 @@ def on_key_down(key):
         exit()
     if key == key.SPACE:
         game.rand_color()
+    if key == key.M:
+        if music.is_playing(MUSIC):
+            music.pause()
+        else:
+            music.unpause()
 
 
 def draw():

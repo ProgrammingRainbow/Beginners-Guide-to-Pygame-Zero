@@ -7,12 +7,14 @@ import random
 import pgzrun  # type: ignore # pylint: disable=E0401
 from pgzero.builtins import (  # type: ignore # pylint: disable=E0401
     Rect,
+    Actor,
+    keyboard,
 )
 
 # Game Constants.
 WIDTH = 800
 HEIGHT = 600
-TITLE = "Moving Text"
+TITLE = "Player Sprite"
 ICON = "images/python-logo.png"
 
 
@@ -34,6 +36,9 @@ class Game:
             (0, 0), (self.font_size * len(self.text) / 1.5, self.font_size)
         )
 
+        self.sprite = Actor("python-logo")
+        self.sprite_vel = 5
+
     def draw(self):
         screen.fill(  # pylint: disable=E0602 # noqa: F821 # type: ignore
             self.screen_color
@@ -48,9 +53,11 @@ class Game:
             fontname=self.font_name,
             fontsize=self.font_size,
         )
+        self.sprite.draw()
 
     def update(self):
         self.update_text()
+        self.update_sprite()
 
     def rand_color(self):
         r = random.randint(0, 255)
@@ -69,6 +76,16 @@ class Game:
             self.text_yvel = -self.text_vel
         if self.text_rect.top < 0:
             self.text_yvel = self.text_vel
+
+    def update_sprite(self):
+        if keyboard.left:
+            self.sprite.x -= self.sprite_vel
+        if keyboard.right:
+            self.sprite.x += self.sprite_vel
+        if keyboard.up:
+            self.sprite.y -= self.sprite_vel
+        if keyboard.down:
+            self.sprite.y += self.sprite_vel
 
 
 game = Game()

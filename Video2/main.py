@@ -3,13 +3,17 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=missing-class-docstring
 
-import random
+from random import randint
 import pgzrun  # type: ignore # pylint: disable=E0401
+
+from pgzero.builtins import (  # type: ignore # pylint: disable=E0401
+    Rect,
+)
 
 # Game Constants.
 WIDTH = 800
 HEIGHT = 600
-TITLE = "Background, Colors and Icon"
+TITLE = "Moving Text"
 ICON = "images/python-logo.png"
 
 
@@ -19,6 +23,17 @@ class Game:
 
         self.screen_color = (0, 0, 0)
 
+        self.font_size = 80
+        self.font_color = (255, 255, 255)
+        self.font_name = "freesansbold"
+        self.text = "Zero"
+        self.text_rect = Rect(
+            (0, 0), (self.font_size * len(self.text) / 1.8, self.font_size)
+        )
+        self.text_vel = 3
+        self.text_xvel = self.text_vel
+        self.text_yvel = self.text_vel
+
     def draw(self):
         screen.fill(  # pylint: disable=E0602 # noqa: F821 # type: ignore
             self.screen_color
@@ -26,15 +41,34 @@ class Game:
         screen.blit(  # pylint: disable=E0602 # noqa: F821 # type: ignore
             self.background, (0, 0)
         )
+        screen.draw.text(  # pylint: disable=E0602 # noqa: F821 # type: ignore
+            self.text,
+            self.text_rect.topleft,
+            color=self.font_color,
+            fontname=self.font_name,
+            fontsize=self.font_size,
+        )
 
     def update(self):
-        pass
+        self.update_text()
 
     def rand_color(self):
-        r = random.randint(0, 255)
-        g = random.randint(0, 255)
-        b = random.randint(0, 255)
+        r = randint(0, 255)
+        g = randint(0, 255)
+        b = randint(0, 255)
         self.screen_color = (r, g, b)
+
+    def update_text(self):
+        self.text_rect.x += self.text_xvel
+        self.text_rect.y += self.text_yvel
+        if self.text_rect.left < 0:
+            self.text_xvel = self.text_vel
+        elif self.text_rect.right > WIDTH:
+            self.text_xvel = -self.text_vel
+        if self.text_rect.top < 0:
+            self.text_yvel = self.text_vel
+        elif self.text_rect.bottom > HEIGHT:
+            self.text_yvel = -self.text_vel
 
 
 game = Game()
