@@ -3,8 +3,9 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=missing-class-docstring
 
-import random
+from random import randint
 import pgzrun  # type: ignore # pylint: disable=E0401
+
 from pgzero.builtins import (  # type: ignore # pylint: disable=E0401
     Rect,
     Actor,
@@ -26,15 +27,14 @@ class Game:
 
         self.font_size = 80
         self.font_color = (255, 255, 255)
-        self.font_name = "freesansbold.ttf"
-
+        self.font_name = "freesansbold"
         self.text = "Zero"
-        self.text_vel = 2
-        self.text_xvel = 2
-        self.text_yvel = 2
         self.text_rect = Rect(
-            (0, 0), (self.font_size * len(self.text) / 1.5, self.font_size)
+            (0, 0), (self.font_size * len(self.text) / 1.8, self.font_size)
         )
+        self.text_vel = 3
+        self.text_xvel = self.text_vel
+        self.text_yvel = self.text_vel
 
         self.sprite = Actor("python-logo")
         self.sprite_vel = 5
@@ -60,31 +60,31 @@ class Game:
         self.update_sprite()
 
     def rand_color(self):
-        r = random.randint(0, 255)
-        g = random.randint(0, 255)
-        b = random.randint(0, 255)
+        r = randint(0, 255)
+        g = randint(0, 255)
+        b = randint(0, 255)
         self.screen_color = (r, g, b)
 
     def update_text(self):
         self.text_rect.x += self.text_xvel
         self.text_rect.y += self.text_yvel
-        if self.text_rect.right > WIDTH:
-            self.text_xvel = -self.text_vel
         if self.text_rect.left < 0:
             self.text_xvel = self.text_vel
-        if self.text_rect.bottom > HEIGHT:
-            self.text_yvel = -self.text_vel
+        elif self.text_rect.right > WIDTH:
+            self.text_xvel = -self.text_vel
         if self.text_rect.top < 0:
             self.text_yvel = self.text_vel
+        elif self.text_rect.bottom > HEIGHT:
+            self.text_yvel = -self.text_vel
 
     def update_sprite(self):
-        if keyboard.left:
+        if keyboard.left or keyboard.a:
             self.sprite.x -= self.sprite_vel
-        if keyboard.right:
+        if keyboard.right or keyboard.d:
             self.sprite.x += self.sprite_vel
-        if keyboard.up:
+        if keyboard.up or keyboard.w:
             self.sprite.y -= self.sprite_vel
-        if keyboard.down:
+        if keyboard.down or keyboard.s:
             self.sprite.y += self.sprite_vel
 
 
